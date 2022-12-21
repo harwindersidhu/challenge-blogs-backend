@@ -26,10 +26,11 @@ app.use(express.static("public"));
 
 
 const blogRoutes = require("./routes/blog");
-
+const slugRoutes = require("./routes/blogSlug");
 
 app.use(bodyparser.json());
 app.use("/api/blogs", blogRoutes(db));
+app.use("/api/blogs/slug", slugRoutes(db));
 
 // Just to check if express is working
 app.get("/", (req, res) => {
