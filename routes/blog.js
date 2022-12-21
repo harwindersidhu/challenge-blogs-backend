@@ -7,8 +7,9 @@ const router = express.Router();
 
 module.exports = (db) => {
 
-  router.get("/", (req, res) => {//user
-    db.query(`SELECT * FROM blogs WHERE published_at IS NOT NULL ORDER BY published_at DESC LIMIT $1;`, [6])
+  router.get("/:page", (req, res) => {
+    const rowsToSkip = req.params.page * 6 - 6;
+    db.query(`SELECT * FROM blogs WHERE published_at IS NOT NULL ORDER BY published_at DESC OFFSET $1 ROWS FETCH NEXT $2 ROWS ONLY;`, [rowsToSkip, 6])
       .then(data =>
         res.json(data.rows)
       )
